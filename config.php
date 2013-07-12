@@ -65,7 +65,7 @@ function urlRedirector(){
 			header('Location: ' . $post->post_title);
 			die();
 		}
-		
+
 	endwhile;
 }
 
@@ -74,9 +74,31 @@ function meta_box(){
 	if(get_post_meta($post->ID,'urlid',true))
 		add_meta_box('url_prompt','Shortened URL','shortenedurl','urls','normal');
 }
+
 function shortenedurl(){
 	global $post;
 	echo "<h2>". site_url() . "/" . get_post_meta($post->ID,'urlid',true) . "</h2>";
+}
+
+function createURL(){
+	$name = $_REQUEST['url'];
+	$my_post = array(
+	  'post_title'    => $name,
+	  'post_status'   => 'publish',
+	  'post_type'	  => 'urls',
+	);
+	$postID = wp_insert_post($my_post);
+
+	$url['link'] = site_url() . "/" . get_post_meta($postID,'urlid',true);
+
+	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+		$url = json_encode($url);
+		echo $url;
+	}
+	else{
+		header("Location: " . $_SERVER["HTTP_REFERER"]);
+	}
+	die();
 }
 
 
