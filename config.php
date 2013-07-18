@@ -61,7 +61,7 @@ function urlRedirector(){
 			add_post_meta($id = $post->ID,$key = 'urlid',$ $value = $string,true);
 		}
 		//
-		if('/test/' . get_post_meta($post->ID,'urlid',true) == $_SERVER["REQUEST_URI"]){
+		if(get_post_meta($post->ID,'urlid',true) == $_SERVER["REQUEST_URI"]){
 			header('Location: ' . $post->post_title);
 			die();
 		}
