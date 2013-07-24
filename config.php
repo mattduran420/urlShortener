@@ -60,8 +60,8 @@ function urlRedirector(){
 			//add it to the post aka link
 			add_post_meta($id = $post->ID,$key = 'urlid',$ $value = $string,true);
 		}
-		//
-		if(get_post_meta($post->ID,'urlid',true) == $_SERVER["REQUEST_URI"]){
+		if(site_url() . "/" . get_post_meta($post->ID,'urlid',true) == 'http://'.$_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"]){
+
 			header('Location: ' . $post->post_title);
 			die();
 		}
