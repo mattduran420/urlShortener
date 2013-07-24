@@ -47,7 +47,9 @@ function urlRedirector(){
 	register_post_type( 'urls', $args );
 
 	//here comes the query
+	$time = -microtime(true);
 	$query = new WP_Query(array('post_type' => array('urls')));
+	
     while ($query->have_posts()) : $query->the_post();
 		global $post;
 
@@ -61,12 +63,14 @@ function urlRedirector(){
 			add_post_meta($id = $post->ID,$key = 'urlid',$ $value = $string,true);
 		}
 		if(site_url() . "/" . get_post_meta($post->ID,'urlid',true) == 'http://'.$_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"]){
-
+			//echo "<h1>Time Till Found: ". $time += microtime(true) ." seconds</h1>";
 			header('Location: ' . $post->post_title);
 			die();
 		}
 
 	endwhile;
+
+	//echo "<h1>Total Time: ". $time += microtime(true) ." seconds</h1>";
 }
 
 function meta_box(){
